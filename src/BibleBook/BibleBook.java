@@ -1,17 +1,19 @@
 package BibleBook;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 
-//Given the previously created class called BibleBook that maintains fields for the book name, number of chapters in the book, and short summary of book contents.
-//Create a program that generates an array of BibleBooks representing all of the Books in the New Testament of the Bible. 
-//You should read the Bible Book data in from a File
-//File format should be the following one book per line:
-//Book name:number of chapters:summary
-//Submit a link to your code on GitHub along with the self evaluation.
+//Allow user to search through the summary of books for a given keyword
+//Store the books in an array list using Generics
+//Allow the user to search the summaries and return the first BibleBook found that has a certain keyword in the summary
+//Read in from file
+//Read in to array list
+//Print from array list
 
 public class BibleBook 
 {
@@ -40,22 +42,48 @@ public class BibleBook
 		book1.display();
 		book2.display();
 		book3.display();
-		
-		File file = new File("BibleBook_Data"); //begin process to read in Bible info
-		
-		try (Scanner sc = new Scanner(file, StandardCharsets.UTF_8.name()))
-		{
-			while (sc.hasNextLine())
-			{
-				String nt_book_info = sc.nextLine(); //use this scanner to get the next line (sc.nextLine)
-				System.out.println(nt_book_info);//print nt_book_info 
-			}
-		}
-		catch (IOException e) {
+
+ 		Scanner input = null;
+		try {
+			input = new Scanner(new File(System.getProperty("user.dir") + "/BibleBook_Data"));
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
+			System.exit(1);	//kill the program if 
+		} 
+ 		ArrayList<BibleBook> nt_book_info_array = new ArrayList<BibleBook>(); //does this make an array?
+ 		while(input.hasNext()) 
+ 		{
+ 			//nt_book_info_array.add(input.nextLine()); //evaluates to the next line that reads in
+ 			String book_string = input.nextLine(); //book string
+ 			String book_title = book_string.substring(0, book_string.indexOf(':'));
+ 			System.out.println(book_title);
+ 			
+ 			int chapter_number = book_string.indexOf(':');
+ 			
+ 			String book_chapters = book_string.substring(chapter_number + 1, book_string.indexOf(':', chapter_number + 1));
+ 			System.out.println(book_chapters);
+ 			
+ 			String book_description = book_string.substring(chapter_number + 3, book_string.()-1);
+ 			System.out.println(book_description);
+ 		}
+ 		input.close();
+ 		
+ 		static int search(int arr[], int n, int input);  
+ 		for(int i = 0; i < nt_book_info_array.size(); i++)
+ 		{
+ 			if (arr[i] == input)
+ 				return i;
+ 		}
+ 		
+ 		return -1; 
+ 		
+ 		
+	}
+ 		//read input "Jesus", step through each index in array list (linear search), 
+		//linear search here indexOf(jesus or -1) otherwise check next
 	}
 	
-}
+	
+
 
 
